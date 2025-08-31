@@ -138,6 +138,44 @@ target/pit-reports/com.prosoft/index.html
 
 ---
 
+⚙️ Как управлять мутаторами в pom.xml
+Включение/выключение мутаторов:
+```xml
+<configuration>
+    <!-- Только нужные мутаторы -->
+    <mutators>
+        <mutator>CONDITIONALS_BOUNDARY</mutator>
+        <mutator>NEGATE_CONDITIONALS</mutator>
+        <mutator>MATH</mutator>
+        <mutator>PRIMITIVE_RETURNS</mutator>
+        <mutator>TRUE_RETURNS</mutator>
+        <mutator>FALSE_RETURNS</mutator>
+    </mutators>
+</configuration>
+```
+
+Исключить шумные:
+```xml
+<excludedMutators>
+    <excludedMutator>VOID_METHOD_CALLS</excludedMutator>
+    <excludedMutator>EMPTY_RETURNS</excludedMutator>
+</excludedMutators>
+```
+
+---
+
+## ✅ Рекомендации
+
+| Мутатор | Использовать? | Почему |
+|--------|----------------|--------|
+| `MATH`, `NEGATE_CONDITIONALS`, `CONDITIONALS_BOUNDARY` | ✅ Да | Проверяют ключевую логику |
+| `PRIMITIVE_RETURNS`, `TRUE_RETURNS`, `FALSE_RETURNS` | ✅ Да | Проверяют возврат значений |
+| `VOID_METHOD_CALLS` | ⚠️ Осторожно | Много шума, особенно с логгерами |
+| `EMPTY_RETURNS` | ⚠️ Осторожно | Может быть избыточным |
+| `EXPERIMENTAL_*` | ❌ Нет (по умолчанию) | Нестабильны, могут давать ложные срабатывания |
+
+---
+
 ### 🔎 Пример анализа
 
 Допустим, в методе:
@@ -205,3 +243,9 @@ PITest может создать мутанта: `number > 0` → `number >= 0`.
 - Интегрировать с JaCoCo для анализа покрытия + мутаций.
 
 ---
+
+## 📚 Официальная документация
+- [PITest Mutators](https://pitest.org/quickstart/mutators/)
+- [Configuring Mutators](https://pitest.org/quickstart/maven_plugin/)
+
+
